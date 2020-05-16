@@ -138,8 +138,8 @@ RSpec.describe 'Spec Harness' do
 
         expect(json[:data].length).to eq(100)
         json[:data].each do |merchant|
-          expect(item[:type]).to eq("merchant")
-          expect(item[:attributes]).to have_key(:name)
+          expect(merchant[:type]).to eq("merchant")
+          expect(merchant[:attributes]).to have_key(:name)
         end
       end
 
