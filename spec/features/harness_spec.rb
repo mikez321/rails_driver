@@ -125,7 +125,7 @@ RSpec.describe 'Spec Harness' do
 
         json = JSON.parse(response.body, symbolize_names: true)
 
-        expect(json[:data][:id]).to eq('179')
+        expect(json[:data][:id]).to eq('42')
 
         expected_attributes.each do |attribute, value|
           expect(json[:data][:attributes][attribute]).to eq(value)
