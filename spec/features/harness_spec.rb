@@ -70,7 +70,7 @@ RSpec.describe 'Spec Harness' do
         # Delete a item
         delete_response = conn("/api/v1/items/#{new_item[:id]}").delete
 
-        json = JSON.parse(delte_response.body, symbolize_names: true)
+        json = JSON.parse(delete_response.body, symbolize_names: true)
 
         deleted_item = json[:data]
         expect(deleted_item[:attributes][:name]).to eq(name)
@@ -217,7 +217,7 @@ RSpec.describe 'Spec Harness' do
       json = JSON.parse(response.body, symbolize_names: true)
       expected_id = 11
 
-      expect(json[:data][:attributes][:id]).to eq(expected_id)
+      expect(json[:data][:id]).to eq(expected_id)
     end
   end
 
@@ -236,9 +236,9 @@ RSpec.describe 'Spec Harness' do
     it 'can find a merchants that contain a fragment, case insensitive' do
       response = conn('/api/v1/merchants/find?name=ILL').get
       json = JSON.parse(response.body, symbolize_names: true)
-      name = json[:data][:attribues][:name].downcase
+      name = json[:data][:attributes][:name].downcase
 
-      expect(json[:data].count).to eq(1)
+      expect(json[:data]).to be_a(Hash)
       expect(name).to include('ill')
     end
 
@@ -247,18 +247,21 @@ RSpec.describe 'Spec Harness' do
       json = JSON.parse(response.body, symbolize_names: true)
 
       names = json[:data].map do |merchant|
-        merchant[:attributes][:name]
+        merchant[:attributes][:name].downcase
       end
 
       expect(names.count).to eq(18)
+      names.each do |name|
+        expect(name).to include('haru')
+      end
     end
 
     it 'can find an items that contain a fragment, case insensitive' do
       response = conn('/api/v1/items/find?name=haru').get
       json = JSON.parse(response.body, symbolize_names: true)
-      name = json[:data][:attribues][:name].downcase
+      name = json[:data][:attributes][:name].downcase
 
-      expect(json[:data].count).to eq(18)
+      expect(json[:data]).to be_a(Hash)
       expect(name).to include('haru')
     end
   end
